@@ -2,6 +2,8 @@
 
 Application web simple (ToDo) conçue pour démontrer un pipeline CI/CD GitLab complet : lint, tests, build Docker, scans sécurité et déploiement.
 
+DAT (Document d’Architecture Technique) : `docs/DAT.md`
+
 ## Démarrage local
 
 Prérequis : Node.js 20+.
