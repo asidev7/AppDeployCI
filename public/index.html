@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AppDeployCI</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1>AppDeployCI</h1>
+        <p class="subtitle">Une mini app ToDo pour démontrer un pipeline CI/CD GitLab.</p>
+      </header>
+
+      <section class="card">
+        <form id="createForm" class="row">
+          <input
+            id="titleInput"
+            name="title"
+            placeholder="Nouvelle tâche…"
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Ajouter</button>
+        </form>
+
+        <ul id="items" class="items"></ul>
+        <p id="emptyState" class="muted" hidden>Aucune tâche pour le moment.</p>
+      </section>
+
+      <footer class="footer muted">
+        API: <code>/api/items</code>
+      </footer>
+    </main>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
+
