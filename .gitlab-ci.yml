@@ -71,7 +71,10 @@ deploy_prod:
     - |
       ssh -p "${DEPLOY_PORT:-22}" "$DEPLOY_USER@$DEPLOY_HOST" "mkdir -p '$DEPLOY_PATH'"
     - |
-      ssh -p "${DEPLOY_PORT:-22}" "$DEPLOY_USER@$DEPLOY_HOST" "cd '$DEPLOY_PATH' && \
-        echo '$CI_REGISTRY_PASSWORD' | docker login -u '$CI_REGISTRY_USER' --password-stdin '$CI_REGISTRY' && \
+      scp -P "${DEPLOY_PORT:-22}" deploy/docker-compose.prod.yml "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/docker-compose.yml"
+    - |
+      printf %s "$CI_REGISTRY_PASSWORD" | ssh -p "${DEPLOY_PORT:-22}" "$DEPLOY_USER@$DEPLOY_HOST" "cd '$DEPLOY_PATH' && \
+        mkdir -p data && \
+        docker login -u '$CI_REGISTRY_USER' --password-stdin '$CI_REGISTRY' && \
         docker pull '$CI_REGISTRY_IMAGE:latest' && \
-        docker compose up -d"
+        APP_IMAGE='$CI_REGISTRY_IMAGE:latest' docker compose up -d"

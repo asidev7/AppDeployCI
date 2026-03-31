@@ -9,6 +9,22 @@ const jestGlobals = {
   afterEach: "readonly",
 };
 
+const browserGlobals = {
+  window: "readonly",
+  document: "readonly",
+  fetch: "readonly",
+  alert: "readonly",
+  confirm: "readonly",
+};
+
+const nodeGlobals = {
+  __dirname: "readonly",
+  module: "readonly",
+  require: "readonly",
+  process: "readonly",
+  console: "readonly",
+};
+
 module.exports = [
   {
     files: ["**/*.js"],
@@ -17,6 +33,7 @@ module.exports = [
       sourceType: "commonjs",
       globals: {
         ...jestGlobals,
+        ...nodeGlobals,
       },
     },
     rules: {
@@ -24,5 +41,12 @@ module.exports = [
       "no-undef": "error",
     },
   },
+  {
+    files: ["public/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...browserGlobals,
+      },
+    },
+  },
 ];
-

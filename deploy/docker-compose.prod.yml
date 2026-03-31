@@ -1,0 +1,12 @@
+services:
+  app:
+    image: ${APP_IMAGE}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATA_FILE=/data/items.json
+    volumes:
+      - ./data:/data
+

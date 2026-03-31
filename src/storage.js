@@ -1,8 +1,14 @@
 const fs = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
+const os = require("os");
 
 function defaultDataFilePath() {
+  // Serverless platforms (ex: Vercel) have a read-only filesystem except `/tmp`.
+  // Persisting to `/tmp` is ephemeral but avoids runtime crashes.
+  if (process.env.VERCEL === "1" || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return path.join(os.tmpdir(), "appdeployci-items.json");
+  }
   return path.join(__dirname, "..", "data", "items.json");
 }
 
@@ -74,4 +80,3 @@ function createStorage({ dataFilePath } = {}) {
 }
 
 module.exports = { createStorage };
-

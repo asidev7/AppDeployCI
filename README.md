@@ -38,6 +38,8 @@ Le pipeline est défini dans `.gitlab-ci.yml` et inclut :
 - GitLab Security templates (SAST + Dependency Scanning)
 - `deploy_prod` (déploiement via SSH sur un serveur Docker)
 
+Note : `build_image` utilise Docker-in-Docker. Il faut un GitLab Runner autorisant le mode `privileged`.
+
 ### Variables nécessaires (déploiement)
 
 Configurer dans GitLab > Settings > CI/CD > Variables :
@@ -47,6 +49,12 @@ Configurer dans GitLab > Settings > CI/CD > Variables :
 - `SSH_PRIVATE_KEY` : clé privée pour se connecter (format PEM)
 - (optionnel) `DEPLOY_PORT` : port SSH (défaut 22)
 
-Sur le serveur, il faut Docker + Docker Compose plugin, et un fichier `docker-compose.yml` dans `DEPLOY_PATH`.
+Sur le serveur, il faut Docker + Docker Compose plugin. Le job `deploy_prod` copie automatiquement `deploy/docker-compose.prod.yml` vers `DEPLOY_PATH/docker-compose.yml`, puis lance `docker compose up -d`.
+
+# Déploiement Vercel
+
+Cette app est une API Express + fichiers statiques. Sur Vercel, l'entrée est `api/index.js` et `vercel.json` route toutes les requêtes vers cette Function.
+
+Important : le filesystem est en lecture seule sur Vercel (hors `/tmp`). Par défaut, le stockage bascule donc sur `/tmp/appdeployci-items.json` (données non persistantes). Pour forcer un autre chemin, définir `DATA_FILE`.
 
 # AppDeployCI
